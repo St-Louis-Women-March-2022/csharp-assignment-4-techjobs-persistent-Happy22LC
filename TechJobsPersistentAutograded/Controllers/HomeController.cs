@@ -18,6 +18,7 @@ namespace TechJobsPersistentAutograded.Controllers
 
     {
         private JobRepository _repo;
+       
 
         public HomeController(JobRepository repo)
         {
@@ -32,18 +33,36 @@ namespace TechJobsPersistentAutograded.Controllers
             return View(jobs);
         }
 
-
+        //In AddJob() pass an instance of AddJobViewModel to the view.
         [HttpGet("/Add")]
         public IActionResult AddJob()
         {
-            return View();
+            //List<Employer> employers = _repo.Employers.ToList();
+            //List<Skill> skills = _repo.Skills.ToList();
+            //AddJobViewModel addJobViewModel = new AddJobViewModel(employers, skills);
+
+            //i need to to add this in part3
+            //AddJobViewModel addJobViewModel = new AddJobViewModel(_repo.GetAllEmployers(). ToList(), _repo.GetAllSkills().ToList());
+            AddJobViewModel addJobViewModel = new AddJobViewModel(_repo.GetAllEmployers().ToList);
+            return View(addJobViewModel);
         }
 
-
-        public IActionResult ProcessAddJobForm()
+        [HttpPost]
+        public IActionResult ProcessAddJobForm(AddJobViewModel addJobViewModel)
         {
+           
             if (ModelState.IsValid)
             {
+                //Employer newEmployer = _repo.FindEmployerById(addJobViewModel.EmployerId);
+                //Employer theEmployer = new Employers._repo.Find(addJobViewModel.EmployerId);
+                //Creat new Job object
+                Job newJob = new Job()
+                {
+
+                    Name = addJobViewModel.Name
+
+
+                };
                 return Redirect("Index");
             }
 

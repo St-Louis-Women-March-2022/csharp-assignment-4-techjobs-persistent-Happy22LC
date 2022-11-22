@@ -1,4 +1,5 @@
-﻿<h1>Add a Job</h1>
+﻿@model TechJobsPersistentAutograded.ViewModels.AddJobViewModel;
+<h1>Add a Job</h1>
 
 
 <form asp-controller="Home" asp-action="ProcessAddJobForm" method="post">
@@ -6,13 +7,19 @@
     <div class="form-group">
 
         <label>Name</label>
-
-        <input class="form-control" />
-
-        <span></span>
-
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name"></span>
     </div>
+    <!--create the form field to add employer information to the job.
+    This field should be a dropdown menu with all of the employers in the database. -->
 
+    <div class="form-group">
+
+        <label>Employer</label>
+        <select class="form-control" asp-for="EmployerId" asp-items="@Model.Employers"></select>
+        <span asp-validation-for="EmployerId"></span>
+        <a asp-controller="Employer" asp-action="Add">Add Employer</a>
+    </div>
     <input type="submit" value="Add Job" />
 
 </form>
