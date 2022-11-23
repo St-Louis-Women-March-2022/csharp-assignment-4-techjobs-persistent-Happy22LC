@@ -42,13 +42,13 @@ namespace TechJobsPersistentAutograded.Controllers
             //AddJobViewModel addJobViewModel = new AddJobViewModel(employers, skills);
 
             //i need to to add this in part3
-            //AddJobViewModel addJobViewModel = new AddJobViewModel(_repo.GetAllEmployers(). ToList(), _repo.GetAllSkills().ToList());
-            AddJobViewModel addJobViewModel = new AddJobViewModel(_repo.GetAllEmployers().ToList);
+            AddJobViewModel addJobViewModel = new AddJobViewModel(_repo.GetAllEmployers(). ToList(), _repo.GetAllSkills().ToList());
+            //AddJobViewModel addJobViewModel = new AddJobViewModel(_repo.GetAllEmployers().ToList);
             return View(addJobViewModel);
         }
 
         [HttpPost]
-        public IActionResult ProcessAddJobForm(AddJobViewModel addJobViewModel)
+        public IActionResult ProcessAddJobForm(AddJobViewModel addJobViewModel, string[] selectedSkills)
         {
            
             if (ModelState.IsValid)
@@ -59,14 +59,22 @@ namespace TechJobsPersistentAutograded.Controllers
                 Job newJob = new Job()
                 {
 
-                    Name = addJobViewModel.Name
-
+                    Name = addJobViewModel.Name,
+                    EmployerId = addJobViewModel.EmployerId,
+                    Employer = _repo.FindEmployerById(addJobViewModel.EmployerId)
 
                 };
-                return Redirect("Index");
+                //................
+
+
+                _repo.GetAllJobsEmployer().Add(newJob);
+                // _repo.Jobs.Add(newJob);
+                //return Redirect("Index");
+                _repo.SaveChanges();
+                return Redirect("/Employer");
             }
 
-            return View("Add");
+            return View("Add",addJobViewModel);
         }
 
 
