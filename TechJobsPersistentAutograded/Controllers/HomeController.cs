@@ -37,13 +37,14 @@ namespace TechJobsPersistentAutograded.Controllers
         [HttpGet("/Add")]
         public IActionResult AddJob()
         {
-            //List<Employer> employers = _repo.Employers.ToList();
-            //List<Skill> skills = _repo.Skills.ToList();
-            //AddJobViewModel addJobViewModel = new AddJobViewModel(employers, skills);
+            /*List<Employer> employers = _repo.Employers.ToList();
+            List<Skill> skills = _repo.Skills.ToList();
+            AddJobViewModel addJobViewModel = new AddJobViewModel(employers, skills);*/
 
             //i need to to add this in part3
             AddJobViewModel addJobViewModel = new AddJobViewModel(_repo.GetAllEmployers(). ToList(), _repo.GetAllSkills().ToList());
             //AddJobViewModel addJobViewModel = new AddJobViewModel(_repo.GetAllEmployers().ToList);
+
             return View(addJobViewModel);
         }
 
@@ -54,27 +55,46 @@ namespace TechJobsPersistentAutograded.Controllers
             if (ModelState.IsValid)
             {
                 //Employer newEmployer = _repo.FindEmployerById(addJobViewModel.EmployerId);
-                //Employer theEmployer = new Employers._repo.Find(addJobViewModel.EmployerId);
+                
                 //Creat new Job object
+                
                 Job newJob = new Job()
                 {
 
-                    Name = addJobViewModel.Name,
+                    Name = addJobViewModel.Name,            
                     EmployerId = addJobViewModel.EmployerId,
                     Employer = _repo.FindEmployerById(addJobViewModel.EmployerId)
 
                 };
-                //................
+
+                //loop through each item in selectedSkills
+
+                foreach(String skill in selectedSkills)
+                {
+                    //Inside the loop, you will create a new JobSkill object with the newly-created Job object
+                    //Add each new JobSkill object to the database using the appropriate JobRepository method
+                    JobSkill newJobSkill = new JobSkill()
+                    {
+                        Job = newJob,
+                        SkillId = int.Parse(skill)
+                    };
+                    
+                    _repo.AddNewJobSkill(newJobSkill);
+                }
+
 
 
                 _repo.GetAllJobsEmployer().Add(newJob);
+                _repo.SaveChanges();
+
                 // _repo.Jobs.Add(newJob);
                 //return Redirect("Index");
-                _repo.SaveChanges();
+
                 return Redirect("/Employer");
+                
             }
 
-            return View("Add",addJobViewModel);
+           return View("Add",addJobViewModel);
         }
 
 

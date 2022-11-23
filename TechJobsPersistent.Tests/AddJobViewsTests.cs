@@ -6,8 +6,8 @@ using TechJobsPersistentAutograded.Data;
 using TechJobsPersistentAutograded.Models;
 using TechJobsPersistentAutograded.ViewModels;
 using Xunit;
-
-
+using TechJobsPersistentAutograded.Models;
+using TechJobsPersistentAutograded.ViewModels;
 
 namespace TechJobsPersistentAutograded.Tests
 {

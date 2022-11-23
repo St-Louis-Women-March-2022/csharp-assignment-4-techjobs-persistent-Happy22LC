@@ -48,7 +48,8 @@ namespace TechJobsPersistentAutograded.Controllers
                 };
                 jobs.AddNewEmployer(employer);
                 jobs.SaveChanges();
-                return Redirect("Index");
+                //Change to employer
+                return Redirect("/Employer");
             }
             return View("Add",addEmployerViewModel);
         }
