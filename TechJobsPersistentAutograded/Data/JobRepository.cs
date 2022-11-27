@@ -6,11 +6,16 @@ using TechJobsPersistentAutograded.Models;
 
 namespace TechJobsPersistentAutograded.Data
 {
+    //need a interface for JobSkill 
+    //need a support for simple iteration over a collection of JobSkill
     public interface IJobRepository
     {
         IEnumerable<Job> GetAllJobs();
         IEnumerable<Employer> GetAllEmployers();
         IEnumerable<Skill> GetAllSkills();
+        //updated JobSkill
+        IEnumerable<JobSkill> GetAllJobSkills();
+
         Employer FindEmployerById(int id);
         void AddNewJobSkill(JobSkill newJobSkill);
         void AddNewJob(Job newJob);
@@ -25,9 +30,13 @@ namespace TechJobsPersistentAutograded.Data
         void AddNewSkill(Skill newSkill);
         IEnumerable<JobSkill> FindJobsSkillsBySkillAndJob(int jobId, int skillId);
         IEnumerable<JobSkill> FindJobSkillsById(int id);
-    }
+        //public virtual IEnumerable<JobSkill> GetAllJobSkills()
+        
 
-    public class JobRepository : IJobRepository
+
+    }
+    
+public class JobRepository : IJobRepository
     {
 
         private readonly JobDbContext _context; 
@@ -73,6 +82,12 @@ namespace TechJobsPersistentAutograded.Data
         {
             return _context.Skills.ToList();
         }
+        //updated the interface
+         public virtual IEnumerable<JobSkill> GetAllJobSkills()
+         {
+             return _context.JobSkills.ToList();
+         }
+        
 
         public virtual void AddNewJobSkill(JobSkill newJobSkill)
         {
@@ -146,5 +161,13 @@ namespace TechJobsPersistentAutograded.Data
                 .Include(js => js.Skill)
                 .ToList();
         }
+        //added 
+        /* public virtual IEnumerable<JobSkill> GetAllJobSkills()
+         {
+             return _context.JobSkills.ToList();
+         }
+        */
+
+
     }
 }

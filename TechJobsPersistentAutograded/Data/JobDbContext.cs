@@ -10,6 +10,7 @@ namespace TechJobsPersistentAutograded.Data
         public DbSet<Skill> Skills { get; set; }
         public DbSet<JobSkill> JobSkills { get; set; }
 
+
         public JobDbContext(DbContextOptions<JobDbContext> options)
             : base(options)
         {
@@ -22,4 +23,5 @@ namespace TechJobsPersistentAutograded.Data
         }
     }
 }
-
+//this class for Migration to create all the tables in the database
+//OnModelCreating method that can be used for configure the primary key

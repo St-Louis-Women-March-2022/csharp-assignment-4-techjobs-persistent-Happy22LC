@@ -29,6 +29,7 @@ namespace TechJobsPersistentAutograded.Controllers
         }
 
         //3.an instance of AddEmployerViewModel inside of the Add() method and pass into the View() return method.
+        [HttpGet]
         public IActionResult Add()
         {
             AddEmployerViewModel addEmployerViewModel = new AddEmployerViewModel();
@@ -49,7 +50,9 @@ namespace TechJobsPersistentAutograded.Controllers
                 jobs.AddNewEmployer(employer);
                 jobs.SaveChanges();
                 //Change to employer
-                return Redirect("/Employer");
+                 return Redirect("/Employer");
+               // return Redirect("Index");
+
             }
             return View("Add",addEmployerViewModel);
         }

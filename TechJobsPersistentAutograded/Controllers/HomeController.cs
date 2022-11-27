@@ -26,7 +26,6 @@ namespace TechJobsPersistentAutograded.Controllers
         }
 
         public IActionResult Index()
-
         {
             IEnumerable<Job> jobs = _repo.GetAllJobs();
 
@@ -37,66 +36,81 @@ namespace TechJobsPersistentAutograded.Controllers
         [HttpGet("/Add")]
         public IActionResult AddJob()
         {
-            /*List<Employer> employers = _repo.Employers.ToList();
-            List<Skill> skills = _repo.Skills.ToList();
-            AddJobViewModel addJobViewModel = new AddJobViewModel(employers, skills);*/
+            //3. an instance of AddEmployerViewModel inside of the Add() method and pass the instance into the View() return method.
 
-            //i need to to add this in part3
-            AddJobViewModel addJobViewModel = new AddJobViewModel(_repo.GetAllEmployers(). ToList(), _repo.GetAllSkills().ToList());
-            //AddJobViewModel addJobViewModel = new AddJobViewModel(_repo.GetAllEmployers().ToList);
-
+            List<Employer> employers = _repo.GetAllEmployers().ToList();
+            List<Skill> skills = _repo.GetAllSkills().ToList();
+            
+            AddJobViewModel addJobViewModel = new AddJobViewModel(employers, skills);
             return View(addJobViewModel);
+
         }
 
-        [HttpPost]
-        public IActionResult ProcessAddJobForm(AddJobViewModel addJobViewModel, string[] selectedSkills)
+
+        /*public IActionResult ProcessAddJobForm(AddJobViewModel addJobViewModel)
         {
-           
             if (ModelState.IsValid)
             {
-                //Employer newEmployer = _repo.FindEmployerById(addJobViewModel.EmployerId);
-                
-                //Creat new Job object
-                
-                Job newJob = new Job()
-                {
+                Employer theEmployer = _repo.FindEmployerById(addJobViewModel.EmployerId);
 
-                    Name = addJobViewModel.Name,            
-                    EmployerId = addJobViewModel.EmployerId,
-                    Employer = _repo.FindEmployerById(addJobViewModel.EmployerId)
+                Job job = new Job
+                {
+                    Name = addJobViewModel.Name,
+                    EmployerId = theEmployer.Id
 
                 };
-
-                //loop through each item in selectedSkills
-
-                foreach(String skill in selectedSkills)
-                {
-                    //Inside the loop, you will create a new JobSkill object with the newly-created Job object
-                    //Add each new JobSkill object to the database using the appropriate JobRepository method
-                    JobSkill newJobSkill = new JobSkill()
-                    {
-                        Job = newJob,
-                        SkillId = int.Parse(skill)
-                    };
-                    
-                    _repo.AddNewJobSkill(newJobSkill);
-                }
-
-
-
-                _repo.GetAllJobsEmployer().Add(newJob);
+                _repo.AddNewJob(job);
                 _repo.SaveChanges();
-
-                // _repo.Jobs.Add(newJob);
-                //return Redirect("Index");
-
-                return Redirect("/Employer");
-                
+                return Redirect("Index");
             }
 
-           return View("Add",addJobViewModel);
+            return View("AddJob", addJobViewModel);
         }
+        */
 
+
+
+
+        
+                [HttpPost]
+                public IActionResult ProcessAddJobForm(AddJobViewModel addJobViewModel, string[] selectedSkills)
+                {
+
+                    if (ModelState.IsValid)
+                    {
+                        Employer newEmployer = _repo.FindEmployerById(addJobViewModel.EmployerId);
+
+                        //Creat new Job object
+
+                        Job newJob = new Job()
+                        {
+                            Name = addJobViewModel.Name,
+                            EmployerId = newEmployer.Id,
+                            Employer = newEmployer                       
+                        };
+
+                        //loop through each item in selectedSkills                       
+
+                        for (int i = 0; i < selectedSkills.Length; i++)
+                        {
+                            JobSkill jobSkill = new JobSkill
+                            {
+                                JobId = newJob.Id,
+                                Job = newJob,
+                                SkillId = int.Parse(selectedSkills[i]),
+                            };
+                            _repo.AddNewJobSkill(jobSkill);
+                        }
+                        _repo.AddNewJob(newJob);
+                        //_repo.GetAllJobsEmployer().Add(newJob);
+                        _repo.SaveChanges();
+                        return Redirect("Index");
+
+                    }
+                    //return View("Add",addJobViewModel);
+                    return View("AddJob",addJobViewModel);
+                }
+        
 
         public IActionResult Detail(int id)
         {
