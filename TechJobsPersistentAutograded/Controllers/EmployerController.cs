@@ -45,7 +45,7 @@ namespace TechJobsPersistentAutograded.Controllers
                 Employer employer = new Employer
                 {
                     Name = addEmployerViewModel.Name,
-                    Location = addEmployerViewModel.Location,
+                    Location = addEmployerViewModel.Location
                 };
                 jobs.AddNewEmployer(employer);
                 jobs.SaveChanges();

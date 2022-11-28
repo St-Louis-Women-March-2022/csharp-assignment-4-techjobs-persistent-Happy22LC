@@ -97,9 +97,8 @@ namespace TechJobsPersistentAutograded.Controllers
             return View(viewModel);
         }
 
-
-
         //need to add the post handler for add the jobskill to the table entries
+        [HttpPost]
         public IActionResult AddJobSkill(AddJobSkillViewModel viewModel)
         {
             if(ModelState.IsValid)

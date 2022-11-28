@@ -45,71 +45,45 @@ namespace TechJobsPersistentAutograded.Controllers
             return View(addJobViewModel);
 
         }
-
-
-        /*public IActionResult ProcessAddJobForm(AddJobViewModel addJobViewModel)
+       
+                [HttpPost]
+        public IActionResult ProcessAddJobForm(AddJobViewModel addJobViewModel, string[] selectedSkills)
         {
+
             if (ModelState.IsValid)
             {
-                Employer theEmployer = _repo.FindEmployerById(addJobViewModel.EmployerId);
+                Employer newEmployer = _repo.FindEmployerById(addJobViewModel.EmployerId);
 
-                Job job = new Job
-                {
+                //Creat new Job object
+
+                 Job newJob = new Job()
+                 {
                     Name = addJobViewModel.Name,
-                    EmployerId = theEmployer.Id
+                    EmployerId = newEmployer.Id,
+                                          
+                 };
 
-                };
-                _repo.AddNewJob(job);
-                _repo.SaveChanges();
-                return Redirect("Index");
+                  //loop through each item in selectedSkills                       
+
+                  for (int i = 0; i < selectedSkills.Length; i++)
+                  {
+                     JobSkill jobSkill = new JobSkill
+                     {
+                        JobId = newJob.Id,
+                        Job = newJob,
+                        SkillId = int.Parse(selectedSkills[i]),
+                     };
+                      _repo.AddNewJobSkill(jobSkill);
+                  }
+                    _repo.AddNewJob(newJob);
+                    //_repo.GetAllJobsEmployer().Add(newJob);
+                     _repo.SaveChanges();
+                    return Redirect("Index");
+
             }
-
-            return View("AddJob", addJobViewModel);
+             //return View("Add",addJobViewModel);
+             return View("AddJob",addJobViewModel);
         }
-        */
-
-
-
-
-        
-                [HttpPost]
-                public IActionResult ProcessAddJobForm(AddJobViewModel addJobViewModel, string[] selectedSkills)
-                {
-
-                    if (ModelState.IsValid)
-                    {
-                        Employer newEmployer = _repo.FindEmployerById(addJobViewModel.EmployerId);
-
-                        //Creat new Job object
-
-                        Job newJob = new Job()
-                        {
-                            Name = addJobViewModel.Name,
-                            EmployerId = newEmployer.Id,
-                            Employer = newEmployer                       
-                        };
-
-                        //loop through each item in selectedSkills                       
-
-                        for (int i = 0; i < selectedSkills.Length; i++)
-                        {
-                            JobSkill jobSkill = new JobSkill
-                            {
-                                JobId = newJob.Id,
-                                Job = newJob,
-                                SkillId = int.Parse(selectedSkills[i]),
-                            };
-                            _repo.AddNewJobSkill(jobSkill);
-                        }
-                        _repo.AddNewJob(newJob);
-                        //_repo.GetAllJobsEmployer().Add(newJob);
-                        _repo.SaveChanges();
-                        return Redirect("Index");
-
-                    }
-                    //return View("Add",addJobViewModel);
-                    return View("AddJob",addJobViewModel);
-                }
         
 
         public IActionResult Detail(int id)
