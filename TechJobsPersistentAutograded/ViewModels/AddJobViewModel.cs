@@ -16,10 +16,11 @@ namespace TechJobsPersistentAutograded.ViewModels
         public string Name { get; set; }
         [Required(ErrorMessage = "Employer is required")]
         public int EmployerId { get; set; }
+        public int Id { get; set; }
         public List<SelectListItem> Employer { get; set; }
         //skills will be added in part3
-        //public List<SelectListItem> JobSkills { get; set; }
-        public List<Skill> JobSkills { get; set; }
+        public List<SelectListItem> JobSkills { get; set; }
+        //public List<Skill> JobSkills { get; set; }
         public List<int> SkillId { get; set; }
 
         public AddJobViewModel(List<Employer> employers, List<Skill> skills)
@@ -37,8 +38,19 @@ namespace TechJobsPersistentAutograded.ViewModels
                 });
             }
             //property equal to the parameter you have just passed in
-            JobSkills = skills;
-      
+            //JobSkills = skills;
+            JobSkills = new List<SelectListItem>();
+
+            foreach (Skill skillItem in skills)
+            {
+                JobSkills.Add(new SelectListItem
+                {
+                    Value = skillItem.Id.ToString(),
+                    Text = skillItem.Name
+
+                });
+            }
+
         }
 
             public AddJobViewModel(){ }

@@ -46,7 +46,7 @@ namespace TechJobsPersistentAutograded.Controllers
 
         }
        
-                [HttpPost]
+         [HttpPost]
         public IActionResult ProcessAddJobForm(AddJobViewModel addJobViewModel, string[] selectedSkills)
         {
 
