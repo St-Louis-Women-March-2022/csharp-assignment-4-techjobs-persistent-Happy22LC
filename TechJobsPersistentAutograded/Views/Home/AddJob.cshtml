@@ -21,17 +21,26 @@
         @*<a asp-controller="Employer" asp-action="Add">Add Employer</a>*@
    
     </div>
+     
+    @if (Model.JobSkills != null)
+    {
+        <div class="form-group">
 
-    <div class="form-group">
-        <label asp-for="Id">Select the Skills</label>
-        
-            @foreach(SelectListItem item in @Model.JobSkills)
+            @foreach (var skill in Model.JobSkills)
             {
-               <li>
-                  <input name="selectedSkills" value=@item.Value type="checkbox" />@item.Text
-               </li>
+
+                <input type="checkbox" name="selectedSkills" value="@skill.Id"/>
+                <label asp-for="@skill.Name">@skill.Name</label>
             }
+            <a asp-controller="Skill" asp-action="Add">Add Skill</a>
+        </div>
+    }
+
+     <div>
+        <a asp-controller="Employer" asp-action="Add" >Add Employer</a>
     </div>
+
+    <input type="submit" value="Add Job" />
 
 
     @*<div class="form-group">
@@ -46,10 +55,16 @@
 
     </div>*@
 
-    <div>
-        <a asp-controller="Employer" asp-action="Add" >Add Employer</a>
-    </div>
-
-    <input type="submit" value="Add Job" />
+     @*
+    <div class="form-group">
+        <label asp-for="Id">Select the Skills</label>
+        
+            @foreach(SelectListItem item in @Model.JobSkills)
+            {
+               <li>
+                  <input name="selectedSkills" value=@item.Value type="checkbox" />@item.Text
+               </li>
+            }
+    </div>*@
 
 </form>

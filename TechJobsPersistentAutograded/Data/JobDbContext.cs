@@ -15,7 +15,7 @@ namespace TechJobsPersistentAutograded.Data
             : base(options)
         {
         }
-
+        //provide additional configuration for the data store.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<JobSkill>()

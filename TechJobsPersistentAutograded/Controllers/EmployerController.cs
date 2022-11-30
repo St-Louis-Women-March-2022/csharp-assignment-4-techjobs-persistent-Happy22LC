@@ -47,6 +47,7 @@ namespace TechJobsPersistentAutograded.Controllers
                     Name = addEmployerViewModel.Name,
                     Location = addEmployerViewModel.Location
                 };
+                //store to the database
                 jobs.AddNewEmployer(employer);
                 jobs.SaveChanges();
                 //Change to employer
@@ -60,8 +61,14 @@ namespace TechJobsPersistentAutograded.Controllers
         //5.About() currently returns a view with vital information about each employer such as their name and location.
         public IActionResult About(int id)
         {
-            Employer employerAbout = jobs.FindEmployerById(id);
-            return View(employerAbout);
+            /*Employer employerAbout = jobs.FindEmployerById(id);
+            return View(employerAbout);*/
+            AddEmployerViewModel viewModel = new AddEmployerViewModel();
+            Employer employerAbout = jobs.GetAllEmployers().Where(x => x.Id == id).First();
+            viewModel.Name = employerAbout.Name;
+            viewModel.Location = employerAbout.Location;
+            return View(viewModel);
+
         }
     }
 }

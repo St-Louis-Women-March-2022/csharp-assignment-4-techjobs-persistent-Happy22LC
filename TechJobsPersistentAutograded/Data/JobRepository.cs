@@ -14,7 +14,7 @@ namespace TechJobsPersistentAutograded.Data
         IEnumerable<Employer> GetAllEmployers();
         IEnumerable<Skill> GetAllSkills();
         //updated JobSkill
-        IEnumerable<JobSkill> GetAllJobSkills();
+        //IEnumerable<JobSkill> GetAllJobSkills();
 
         Employer FindEmployerById(int id);
         void AddNewJobSkill(JobSkill newJobSkill);
@@ -83,10 +83,10 @@ public class JobRepository : IJobRepository
             return _context.Skills.ToList();
         }
         //updated the interface
-         public virtual IEnumerable<JobSkill> GetAllJobSkills()
+        /* public virtual IEnumerable<JobSkill> GetAllJobSkills()
          {
              return _context.JobSkills.ToList();
-         }
+         }*/
         
 
         public virtual void AddNewJobSkill(JobSkill newJobSkill)

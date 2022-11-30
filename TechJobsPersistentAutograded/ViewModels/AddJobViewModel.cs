@@ -16,12 +16,14 @@ namespace TechJobsPersistentAutograded.ViewModels
         public string Name { get; set; }
         [Required(ErrorMessage = "Employer is required")]
         public int EmployerId { get; set; }
-        public int Id { get; set; }
+        //public int Id { get; set; }
         public List<SelectListItem> Employer { get; set; }
         //skills will be added in part3
-        public List<SelectListItem> JobSkills { get; set; }
-        //public List<Skill> JobSkills { get; set; }
+        //public List<SelectListItem> JobSkills { get; set; }
+        public List<Skill> JobSkills { get; set; }
         public List<int> SkillId { get; set; }
+
+        //
 
         public AddJobViewModel(List<Employer> employers, List<Skill> skills)
         {
@@ -32,25 +34,13 @@ namespace TechJobsPersistentAutograded.ViewModels
             {
                 Employer.Add(new SelectListItem
                 {
-                    Value = employerItem.Id.ToString(),
-                    Text = employerItem.Name
+                    Value = employerItem.Id.ToString(),//value is the actual form value that will submited 
+                    Text = employerItem.Name //display
 
                 });
             }
             //property equal to the parameter you have just passed in
-            //JobSkills = skills;
-            //without looping the Id's doesn't updated in the workbench
-            JobSkills = new List<SelectListItem>();
-
-            foreach (Skill skillItem in skills)
-            {
-                JobSkills.Add(new SelectListItem
-                {
-                    Value = skillItem.Id.ToString(),
-                    Text = skillItem.Name
-
-                });
-            }
+            JobSkills = skills;
 
         }
 

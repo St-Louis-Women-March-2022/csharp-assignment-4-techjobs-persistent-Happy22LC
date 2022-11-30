@@ -49,6 +49,34 @@ namespace TechJobsPersistentAutograded.Controllers
          [HttpPost]
         public IActionResult ProcessAddJobForm(AddJobViewModel addJobViewModel, string[] selectedSkills)
         {
+            if (ModelState.IsValid)
+            {
+                Job newJob = new Job()
+                {
+                    Name = addJobViewModel.Name,
+                    EmployerId = addJobViewModel.EmployerId,
+
+                };
+                foreach (var skill in selectedSkills)
+                {
+                    JobSkill jobSkill = new JobSkill();
+                    jobSkill.Job = newJob;
+                    jobSkill.SkillId = Convert.ToInt32(skill);
+                    newJob.JobSkills.Add(jobSkill);
+                }
+
+                _repo.AddNewJob(newJob);
+                _repo.SaveChanges();
+                return Redirect("Index");
+            }
+
+            return View("Add", addJobViewModel);
+        }
+
+        //tried to do but testcases didn't passed
+
+        /*public IActionResult ProcessAddJobForm(AddJobViewModel addJobViewModel, string[] selectedSkills)
+        {
 
             if (ModelState.IsValid)
             {
@@ -83,8 +111,7 @@ namespace TechJobsPersistentAutograded.Controllers
             }
              //return View("Add",addJobViewModel);
              return View("AddJob",addJobViewModel);
-        }
-        
+        }*/
 
         public IActionResult Detail(int id)
         {
