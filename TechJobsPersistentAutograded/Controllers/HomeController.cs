@@ -18,6 +18,7 @@ namespace TechJobsPersistentAutograded.Controllers
 
     {
         private JobRepository _repo;
+       
 
         public HomeController(JobRepository repo)
         {
@@ -25,31 +26,92 @@ namespace TechJobsPersistentAutograded.Controllers
         }
 
         public IActionResult Index()
-
         {
             IEnumerable<Job> jobs = _repo.GetAllJobs();
 
             return View(jobs);
         }
 
-
+        //In AddJob() pass an instance of AddJobViewModel to the view.
         [HttpGet("/Add")]
         public IActionResult AddJob()
         {
-            return View();
+            //3. an instance of AddEmployerViewModel inside of the Add() method and pass the instance into the View() return method.
+
+            List<Employer> employers = _repo.GetAllEmployers().ToList();
+            List<Skill> skills = _repo.GetAllSkills().ToList();
+            
+            AddJobViewModel addJobViewModel = new AddJobViewModel(employers, skills);
+            return View(addJobViewModel);
+
         }
-
-
-        public IActionResult ProcessAddJobForm()
+       
+         [HttpPost]
+        public IActionResult ProcessAddJobForm(AddJobViewModel addJobViewModel, string[] selectedSkills)
         {
             if (ModelState.IsValid)
             {
+                Job newJob = new Job()
+                {
+                    Name = addJobViewModel.Name,
+                    EmployerId = addJobViewModel.EmployerId,
+
+                };
+                foreach (var skill in selectedSkills)
+                {
+                    JobSkill jobSkill = new JobSkill();
+                    jobSkill.Job = newJob;
+                    jobSkill.SkillId = Convert.ToInt32(skill);
+                    newJob.JobSkills.Add(jobSkill);
+                }
+
+                _repo.AddNewJob(newJob);
+                _repo.SaveChanges();
                 return Redirect("Index");
             }
 
-            return View("Add");
+            return View("Add", addJobViewModel);
         }
 
+        //tried to do but testcases didn't passed
+
+        /*public IActionResult ProcessAddJobForm(AddJobViewModel addJobViewModel, string[] selectedSkills)
+        {
+
+            if (ModelState.IsValid)
+            {
+                Employer newEmployer = _repo.FindEmployerById(addJobViewModel.EmployerId);
+
+                //Creat new Job object
+
+                 Job newJob = new Job()
+                 {
+                    Name = addJobViewModel.Name,
+                    EmployerId = newEmployer.Id,
+                                          
+                 };
+
+                  //loop through each item in selectedSkills                       
+
+                  for (int i = 0; i < selectedSkills.Length; i++)
+                  {
+                     JobSkill jobSkill = new JobSkill
+                     {
+                        JobId = newJob.Id,
+                        Job = newJob,
+                        SkillId = int.Parse(selectedSkills[i]),
+                     };
+                      _repo.AddNewJobSkill(jobSkill);
+                  }
+                    _repo.AddNewJob(newJob);
+                    //_repo.GetAllJobsEmployer().Add(newJob);
+                     _repo.SaveChanges();
+                    return Redirect("Index");
+
+            }
+             //return View("Add",addJobViewModel);
+             return View("AddJob",addJobViewModel);
+        }*/
 
         public IActionResult Detail(int id)
         {

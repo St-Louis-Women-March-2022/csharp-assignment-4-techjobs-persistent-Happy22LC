@@ -13,26 +13,62 @@ namespace TechJobsPersistentAutograded.Controllers
 {
     public class EmployerController : Controller
     {
+        //1. private JobRepository variable for Create, Read, Update and Delete operations.
+        private JobRepository jobs;
+        public EmployerController(JobRepository jobs)
+        {
+            this.jobs = jobs;
+        }
 
+        //2.pass all of the Employer objects in the database to the view.
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
+            IEnumerable<Employer> employers = jobs.GetAllEmployers();
+            return View(employers);
         }
 
+        //3.an instance of AddEmployerViewModel inside of the Add() method and pass into the View() return method.
+        [HttpGet]
         public IActionResult Add()
         {
-            return View();
+            AddEmployerViewModel addEmployerViewModel = new AddEmployerViewModel();
+            return View(addEmployerViewModel);
         }
 
-        public IActionResult ProcessAddEmployerForm()
+        //4.Add the appropriate code to ProcessAddEmployerForm() so that it will process form submissions
+        [HttpPost]
+        public IActionResult ProcessAddEmployerForm(AddEmployerViewModel addEmployerViewModel)
         {
-            return View();
+            if(ModelState.IsValid)
+            {
+                Employer employer = new Employer
+                {
+                    Name = addEmployerViewModel.Name,
+                    Location = addEmployerViewModel.Location
+                };
+                //store to the database
+                jobs.AddNewEmployer(employer);
+                jobs.SaveChanges();
+                //Change to employer
+                 return Redirect("/Employer");
+               // return Redirect("Index");
+
+            }
+            return View("Add",addEmployerViewModel);
         }
 
+        //5.About() currently returns a view with vital information about each employer such as their name and location.
         public IActionResult About(int id)
         {
-            return View();
+            /*Employer employerAbout = jobs.FindEmployerById(id);
+            return View(employerAbout);*/
+            AddEmployerViewModel viewModel = new AddEmployerViewModel();
+            Employer employerAbout = jobs.GetAllEmployers().Where(x => x.Id == id).First();
+            viewModel.Name = employerAbout.Name;
+            viewModel.Location = employerAbout.Location;
+            return View(viewModel);
+
         }
     }
 }

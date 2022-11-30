@@ -17,6 +17,8 @@ namespace TechJobsPersistentAutograded.Models
 
         public Job()
         {
+            //added this
+            JobSkills = new List<JobSkill>();
         }
 
         public Job(string name)

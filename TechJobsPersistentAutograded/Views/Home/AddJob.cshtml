@@ -1,4 +1,5 @@
-﻿<h1>Add a Job</h1>
+﻿@model TechJobsPersistentAutograded.ViewModels.AddJobViewModel;
+<h1>Add a Job</h1>
 
 
 <form asp-controller="Home" asp-action="ProcessAddJobForm" method="post">
@@ -6,15 +7,64 @@
     <div class="form-group">
 
         <label>Name</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <!--create the form field to add employer information to the job.
+    This field should be a dropdown menu with all of the employers in the database. -->
 
-        <input class="form-control" />
+    <div class="form-group">
 
-        <span></span>
+        <label asp-for="EmployerId">Choose an Employer:</label>
+        <select class="form-control" asp-for="EmployerId" asp-items="@Model.Employer"></select>
+        <span asp-validation-for="EmployerId"></span>
+        @*<a asp-controller="Employer" asp-action="Add">Add Employer</a>*@
+   
+    </div>
+     
+    @if (Model.JobSkills != null)
+    {
+        <div class="form-group">
 
+            @foreach (var skill in Model.JobSkills)
+            {
+
+                <input type="checkbox" name="selectedSkills" value="@skill.Id"/>
+                <label asp-for="@skill.Name">@skill.Name</label>
+            }
+            <a asp-controller="Skill" asp-action="Add">Add Skill</a>
+        </div>
+    }
+
+     <div>
+        <a asp-controller="Employer" asp-action="Add" >Add Employer</a>
     </div>
 
     <input type="submit" value="Add Job" />
 
+
+    @*<div class="form-group">
+
+        @foreach(var item in Model.JobSkills)
+        {
+            <label for="@item.Id">@item.Name</label>
+            
+             <input name="Skills" value=@item.Id type="checkbox" />
+            
+        }
+
+    </div>*@
+
+     @*
+    <div class="form-group">
+        <label asp-for="Id">Select the Skills</label>
+        
+            @foreach(SelectListItem item in @Model.JobSkills)
+            {
+               <li>
+                  <input name="selectedSkills" value=@item.Value type="checkbox" />@item.Text
+               </li>
+            }
+    </div>*@
+
 </form>
-
-

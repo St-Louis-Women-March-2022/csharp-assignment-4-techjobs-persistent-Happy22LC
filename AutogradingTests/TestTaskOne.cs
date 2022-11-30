@@ -37,7 +37,7 @@ namespace TaskOne.Tests
             Boolean mySqlConnectionUsername = mysqlConnectionString.Contains("userid=techjobs");
             Assert.True(mySqlConnectionUsername, "Username is not techjobs");
 
-            Boolean mySqlConnectionPassword = mysqlConnectionString.Contains("password=techjobs");
+            Boolean mySqlConnectionPassword = mysqlConnectionString.Contains("password=Happy2code!");
             Assert.True(mySqlConnectionPassword, "Password is not techjobs");
         }
     }
