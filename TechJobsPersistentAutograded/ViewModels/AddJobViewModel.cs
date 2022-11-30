@@ -39,6 +39,7 @@ namespace TechJobsPersistentAutograded.ViewModels
             }
             //property equal to the parameter you have just passed in
             //JobSkills = skills;
+            //without looping the Id's doesn't updated in the workbench
             JobSkills = new List<SelectListItem>();
 
             foreach (Skill skillItem in skills)
